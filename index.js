@@ -37,13 +37,25 @@ const set = (key, object, ttl = null) => {
 
 const incr = key => {
   return get(key)
-  .then(data => set(key, data + 1))
+  .then(data => {
+    if (typeof data !== 'number') {
+      return Promise.reject(new Error('ITEM_IS_NOT_A_NUMBER'))
+    }
+
+    return set(key, data + 1)
+  })
   .catch(err => Promise.reject(err))
 }
 
 const decr = key => {
   return get(key)
-  .then(data => set(key, data - 1))
+  .then(data => {
+    if (typeof data !== 'number') {
+      return Promise.reject(new Error('ITEM_IS_NOT_A_NUMBER'))
+    }
+
+    return set(key, data - 1)
+  })
   .catch(err => Promise.reject(err))
 }
 
